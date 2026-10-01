@@ -49,10 +49,17 @@ body.admin-bar #wpfooter {
 	cursor: grab;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 	touch-action: none;
+	appearance: none;
+	-webkit-appearance: none;
 }
 
 .fab-handle:active {
 	cursor: grabbing;
+}
+
+.fab-handle:focus-visible {
+	outline: 2px solid #72aee6;
+	outline-offset: 2px;
 }
 
 .fab-handle-icon {
