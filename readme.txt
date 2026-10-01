@@ -4,7 +4,7 @@ Tags: admin bar, toolbar, dashboard, menu, accessibility
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,10 +46,16 @@ Settings → Floating Admin Bar currently offers toggles for "About WordPress" a
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix: the handle lost its rounded shape when focused via keyboard in browsers that redraw native button focus chrome (notably Safari); it now keeps its circular shape with a custom focus style.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Fixes a visual bug where keyboard focus squared off the handle's rounded corners.
 
 = 1.0.0 =
 Initial release.
