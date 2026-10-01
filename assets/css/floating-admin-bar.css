@@ -1,0 +1,212 @@
+/* Cancel the spacing WordPress core reserves for the native admin bar — we float instead. */
+html.wp-toolbar {
+	padding-top: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+	html.wp-toolbar {
+		padding-top: 0 !important;
+	}
+}
+
+#wpadminbar {
+	display: none !important;
+}
+
+body.admin-bar #wpcontent,
+body.admin-bar #wpfooter {
+	margin-top: 0 !important;
+}
+
+#fab-widget {
+	position: fixed;
+	left: 24px;
+	bottom: 24px;
+	z-index: 2147483000;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-size: 13px;
+	line-height: 1.3;
+	color: #1d2327;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+#fab-widget * {
+	box-sizing: border-box;
+}
+
+.fab-handle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: #1d2327;
+	color: #fff;
+	cursor: grab;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	touch-action: none;
+}
+
+.fab-handle:active {
+	cursor: grabbing;
+}
+
+.fab-handle-icon {
+	width: 20px;
+	height: 20px;
+	fill: currentColor;
+	transform: rotate(45deg);
+}
+
+#fab-widget.fab-dragging .fab-panel,
+#fab-widget.fab-dragging .fab-flyout {
+	display: none !important;
+}
+
+.fab-panel {
+	display: none;
+	position: absolute;
+	width: 220px;
+	max-height: 320px;
+	overflow-y: auto;
+	padding: 6px;
+	background: #1d2327;
+	color: #eee;
+	border-radius: 8px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+	flex-direction: column;
+	gap: 2px;
+}
+
+#fab-widget.fab-expanded .fab-panel {
+	display: flex;
+}
+
+.fab-flyout {
+	display: none;
+	position: absolute;
+	width: 200px;
+	max-height: 400px;
+	overflow-y: auto;
+	padding: 6px;
+	background: #1d2327;
+	color: #eee;
+	border-radius: 8px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.fab-flyout.fab-open {
+	display: block;
+}
+
+/* Anchoring: open toward the center of the screen so nothing clips past the viewport edge. */
+#fab-widget.fab-anchor-top .fab-panel,
+#fab-widget.fab-anchor-top .fab-flyout {
+	top: 50px;
+}
+
+#fab-widget.fab-anchor-bottom .fab-panel,
+#fab-widget.fab-anchor-bottom .fab-flyout {
+	bottom: 50px;
+}
+
+#fab-widget.fab-anchor-left .fab-panel {
+	left: 0;
+}
+
+#fab-widget.fab-anchor-right .fab-panel {
+	right: 0;
+}
+
+#fab-widget.fab-anchor-left .fab-flyout {
+	left: 226px;
+}
+
+#fab-widget.fab-anchor-right .fab-flyout {
+	right: 226px;
+}
+
+.fab-cell {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	min-height: 36px;
+	padding: 6px 8px;
+	border: none;
+	border-radius: 6px;
+	background: none;
+	color: inherit;
+	text-decoration: none;
+	text-align: left;
+	cursor: pointer;
+}
+
+.fab-cell:hover,
+.fab-cell:focus-visible,
+.fab-cell.fab-active {
+	background: #2c3338;
+	color: #72aee6;
+	outline: none;
+}
+
+.fab-cell .dashicons {
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+}
+
+.fab-cell-label {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	font-size: 12px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fab-flyout-item {
+	display: block;
+	width: 100%;
+	padding: 6px 8px;
+	border: none;
+	border-radius: 4px;
+	background: none;
+	color: inherit;
+	text-align: left;
+	text-decoration: none;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.fab-flyout-item:hover,
+.fab-flyout-item:focus-visible {
+	background: #2c3338;
+	color: #72aee6;
+	outline: none;
+}
+
+.fab-flyout-group {
+	margin: 4px 0;
+}
+
+.fab-flyout-group > .fab-flyout-item {
+	font-weight: 600;
+}
+
+.fab-flyout-subitems {
+	display: none;
+	margin-left: 6px;
+	padding-left: 10px;
+	border-left: 2px solid #2c3338;
+}
+
+.fab-flyout-group.fab-open > .fab-flyout-subitems {
+	display: block;
+}
