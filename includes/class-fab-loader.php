@@ -25,15 +25,34 @@ class FAB_Loader {
 		add_action( 'admin_bar_menu', array( $this, 'capture_nodes' ), 999 );
 		add_action( 'init', array( $this, 'suppress_native_render' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 	}
 
 	/**
 	 * Stop WordPress from printing the native #wpadminbar markup on the front end only —
 	 * the back end keeps its native admin bar. We still let `admin_bar_menu` fire (see
-	 * force_admin_bar_build()) so every other plugin's add_node() calls keep working.
+	 * force_admin_bar_build()) so every other plugin's add_node() calls keep working. Users
+	 * who've opted out of the floating bar (see FAB_Settings) keep the native front-end bar.
 	 */
 	public function suppress_native_render() {
+		if ( ! FAB_Settings::instance()->get_user_preference() ) {
+			return;
+		}
+
 		remove_action( 'wp_footer', 'wp_admin_bar_render', 1000 );
+	}
+
+	/**
+	 * Marks <body> so our stylesheet can cancel core's `html { margin-top }` admin bar bump
+	 * (see the comment above that rule in floating-admin-bar.css) — only when we're actually
+	 * the ones rendering a bar, so users who opted for the native bar keep its spacing intact.
+	 */
+	public function add_body_class( $classes ) {
+		if ( is_admin_bar_showing() && FAB_Settings::instance()->get_user_preference() ) {
+			$classes[] = 'floating-admin-bar';
+		}
+
+		return $classes;
 	}
 
 	public function capture_nodes( $wp_admin_bar ) {
@@ -85,11 +104,25 @@ class FAB_Loader {
 			return;
 		}
 
+		if ( ! FAB_Settings::instance()->get_user_preference() ) {
+			return;
+		}
+
 		$this->force_admin_bar_build();
 
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'floating-admin-bar', FAB_PLUGIN_URL . 'assets/css/floating-admin-bar.css', array( 'dashicons' ), FAB_VERSION );
 		wp_enqueue_script( 'floating-admin-bar', FAB_PLUGIN_URL . 'assets/js/floating-admin-bar.js', array(), FAB_VERSION, true );
+
+		$colors = FAB_Settings::instance()->get_colors();
+		wp_add_inline_style(
+			'floating-admin-bar',
+			sprintf(
+				'#fab-widget { --fab-bg: %s; --fab-text: %s; }',
+				esc_html( $colors['bg'] ),
+				esc_html( $colors['text'] )
+			)
+		);
 
 		wp_localize_script(
 			'floating-admin-bar',

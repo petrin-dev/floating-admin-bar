@@ -1,24 +1,26 @@
-/* Cancel the spacing WordPress core reserves for the native admin bar — we float instead. */
-html.wp-toolbar {
-	padding-top: 0 !important;
-}
-
-@media screen and (max-width: 782px) {
-	html.wp-toolbar {
-		padding-top: 0 !important;
-	}
+/*
+ * Cancel the spacing WordPress core reserves for the native admin bar — we float instead.
+ * Core adds this via an inline style on the bare `html` selector (see
+ * wp_enqueue_admin_bar_bump_styles() in wp-includes/admin-bar.php), not a class, so we can't
+ * target it with a class selector on <html>. `.wp-toolbar` is NOT that class — core only ever
+ * uses it on the <html> element inside wp-admin (_wp_admin_html_begin()), never on the front
+ * end. Instead we mark <body> ourselves (see FAB_Loader::add_body_class()) and reach the
+ * ancestor <html> with :has(). The doubled class selector adds a bit of specificity headroom
+ * over any other !important `html { margin-top }` rule a theme or plugin might add.
+ */
+html:has( body.floating-admin-bar.floating-admin-bar ) {
+	margin-top: 0 !important;
 }
 
 #wpadminbar {
 	display: none !important;
 }
 
-body.admin-bar #wpcontent,
-body.admin-bar #wpfooter {
-	margin-top: 0 !important;
-}
-
 #fab-widget {
+	/* Overridable from Settings → Floating Admin Bar; see FAB_Loader::enqueue(). */
+	--fab-bg: #1d2327;
+	--fab-text: #eeeeee;
+
 	position: fixed;
 	left: 24px;
 	bottom: 24px;
@@ -26,7 +28,7 @@ body.admin-bar #wpfooter {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 	font-size: 13px;
 	line-height: 1.3;
-	color: #1d2327;
+	color: var(--fab-text);
 	-webkit-user-select: none;
 	user-select: none;
 }
@@ -42,10 +44,10 @@ body.admin-bar #wpfooter {
 	width: 44px;
 	height: 44px;
 	padding: 0;
-	border: none;
+	border: 1px solid rgba(255, 255, 255, 0.15);
 	border-radius: 50%;
-	background: #1d2327;
-	color: #fff;
+	background: var(--fab-bg);
+	color: var(--fab-text);
 	cursor: grab;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 	touch-action: none;
@@ -81,8 +83,9 @@ body.admin-bar #wpfooter {
 	max-height: 320px;
 	overflow-y: auto;
 	padding: 6px;
-	background: #1d2327;
-	color: #eee;
+	background: var(--fab-bg);
+	color: var(--fab-text);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 	border-radius: 8px;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 	flex-direction: column;
@@ -100,8 +103,9 @@ body.admin-bar #wpfooter {
 	max-height: 400px;
 	overflow-y: auto;
 	padding: 6px;
-	background: #1d2327;
-	color: #eee;
+	background: var(--fab-bg);
+	color: var(--fab-text);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 	border-radius: 8px;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
@@ -157,8 +161,9 @@ body.admin-bar #wpfooter {
 .fab-cell:hover,
 .fab-cell:focus-visible,
 .fab-cell.fab-active {
-	background: #2c3338;
-	color: #72aee6;
+	/* Inverted: swap the chosen bg/text so hover always reads as the opposite polarity. */
+	background: var(--fab-text);
+	color: var(--fab-bg);
 	outline: none;
 }
 
@@ -194,8 +199,8 @@ body.admin-bar #wpfooter {
 
 .fab-flyout-item:hover,
 .fab-flyout-item:focus-visible {
-	background: #2c3338;
-	color: #72aee6;
+	background: var(--fab-text);
+	color: var(--fab-bg);
 	outline: none;
 }
 

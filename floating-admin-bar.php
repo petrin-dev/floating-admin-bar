@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Floating Admin Bar
  * Description:       A compact, draggable, grid-based replacement for the WordPress admin bar.
- * Version:           1.0.1
+ * Version:           1.0.4
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Petrin.dev
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FAB_VERSION', '1.0.1' );
+define( 'FAB_VERSION', '1.0.4' );
 define( 'FAB_PLUGIN_FILE', __FILE__ );
 define( 'FAB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FAB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
